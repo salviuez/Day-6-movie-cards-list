@@ -41,3 +41,11 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
+.add-movie-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 450px;
+  margin: 10px Auto,
+}

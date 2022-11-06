@@ -3,6 +3,20 @@ import React from "react";
 import "./App.css";
 import logo from "./logo.svg";
 import { useState } from "react";
+import { Msg } from "./Msg";
+import { Welcome, Double } from "./Welcome.js";
+import { Movie } from "./Movie";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
+
+
+
+console.log(Double(10));
+console.log(Double(10));
+console.log(Double(10));
+console.log(Double(10));
 
 
 // function App() {
@@ -18,7 +32,7 @@ import { useState } from "react";
 //     </div>
 //   );
 // }
-const MOVIE_LIST = [
+const INITIAL_MOVIE_LIST = [
   {
     name: "Vikram",
     poster:
@@ -115,7 +129,7 @@ function App() {
     },
   ]
 
-  const moviesAll = MOVIE_LIST
+  const [movieList, setMovieList] = useState(INITIAL_MOVIE_LIST);
 
   return (
     <div className="App">
@@ -129,11 +143,99 @@ function App() {
           name={usr.name}
           pic={usr.pic}
         />
-      ))}
+      ))} */}
 
-      <Counter /> */}
+
+      {/* <AddColor /> */}
+
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/movies">Movies</Link>
+        </li>
+        <li>
+          <Link to="/colorgame">Color Game</Link>
+        </li>
+      </ul>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/films" element={<Navigate replace to="/movies" />} />
+        <Route path="/movies" element={<MovieList movieList={movieList} setMovieList={setMovieList} />} />
+        <Route path="/colorgame" element={<AddColor />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+
+    </div>
+  );
+}
+
+function NotFound() {
+  return (
+    <div>
+      <h1>404 NOT FOUND</h1>
+    </div>
+  )
+}
+
+function Home() {
+  return <h1>Welcome to the movie App</h1>
+}
+
+function MovieList({ movieList, setMovieList }) {
+  const [name, setName] = useState("");
+  const [poster, setPoster] = useState("");
+  const [rating, setRating] = useState("");
+  const [summary, setSummary] = useState("");
+
+  const addMovie = () => {
+    const newMovie = {
+      name: name,
+      poster: poster,
+      rating: rating,
+      summary: summary,
+    };
+    console.log(newMovie);
+
+    setMovieList([...movieList, newMovie])
+  };
+
+  return (
+    <div>
+      <div className="add-movie-container">
+
+        <TextField label="Name" variant="outlined" onChange={(event) => setName(event.target.value)}
+          value={name} />
+
+        {/* check whether its working */}
+        {/* {name} */}
+
+
+        <TextField label="Poster" variant="outlined" onChange={(event) => setPoster(event.target.value)}
+          value={poster} />
+
+        <TextField label="Rating" variant="outlined" onChange={(event) => setRating(event.target.value)}
+          value={rating} />
+
+        <TextField label="Summary" variant="outlined" onChange={(event) => setSummary(event.target.value)}
+          value={summary} />
+
+
+        {/* <p>
+          {name}
+          {poster}
+          {rating}
+          {summary}
+        </p> */}
+
+        <button >Add Movie</button>
+        <Button onClick={addMovie} variant="contained">ADD MOVIE</Button>
+      </div>
       <div className="movie-list">
-        {moviesAll.map((mv) => (
+        {movieList.map((mv) => (
           <Movie movie={mv} />
         ))}
       </div>
@@ -141,61 +243,40 @@ function App() {
   );
 }
 
-function Movie({ movie }) {
-  // const movie = {
-  //   name: "Vikram",
-  //   poster:
-  //     "https://m.media-amazon.com/images/M/MV5BMmJhYTYxMGEtNjQ5NS00MWZiLWEwN2ItYjJmMWE2YTU1YWYxXkEyXkFqcGdeQXVyMTEzNzg0Mjkx._V1_.jpg",
-  //   rating: 8.4,
-  //   summary:
-  //     "Members of a black ops team must track and eliminate a gang of masked murderers."
-  // }
-  return (
-    <div className="movie-container">
-      <img src={movie.poster} alt={movie.name} className="movie-poster"></img>
-      <div className="movie-specs">
-        <h3 className="movie-name">{movie.name}</h3>
-        <p className="movie-rating">{movie.rating}</p>
-      </div>
-      <p className="movie-summary">{movie.summary}</p>
-    </div>
-  );
-}
 
-function Counter() {
-  //let like = 10;
-  const [like, setLike] = useState(0);
-  const [dislike, setdisLike] = useState(0);
+
+function AddColor() {
+  const [color, setColor] = useState("orange");
+  const styles = {
+    background: color,
+  };
+  const [colorList, setColorList] = useState(["orange", "yellow", "pink"]);
   return (
     <div>
-      <button onClick={() => setLike(like + 1)}>{like}</button>
-      <button onClick={() => setdisLike(dislike + 1)}>{dislike}</button>
+      <input style={styles} type="text" onChange={(event) => setColor(event.target.value)}
+        value={color} />
+      <button onClick={() => setColorList([...colorList, color])}>Add Color</button>
+      {colorList.map((clr) => (<ColorBox clr={clr} />))
+
+      }
     </div>
   );
 }
 
+function ColorBox({ clr }) {
+  const styles = {
+    height: "25px",
+    width: "250px",
+    background: clr,
+    marginTop: "10px",
 
-function Welcome({ name }) {
-  // console.log(props);
-  // const { pic, name } = props;  // ES6 Feature -Object destructuring
-  return (
-    <div>
-      <h1>Hello, {name}</h1>
-    </div>
-  );
+
+  };
+  return <div style={styles}></div>;
 }
 
-function Msg({ pic, name }) {
-  // console.log(props);
-  // const { pic, name } = props;  // ES6 Feature -Object destructuring
-  return (
-    <div className="user-container">
-      <img className="profile-pic" src={pic} alt={name}></img>
-      <h1>{name}</h1>
-      <Counter />
-    </div>
-  );
-}
+
+
 
 
 export default App;
