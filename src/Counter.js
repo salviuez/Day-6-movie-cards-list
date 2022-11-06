@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-
+import IconButton from '@mui/material/IconButton';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 export function Counter() {
     //let like = 10;
@@ -10,8 +11,11 @@ export function Counter() {
 
     return (
         <div>
-            <button onClick={incrementLike}>{like}</button>
-            <button onClick={() => setdisLike(dislike + 1)}>{dislike}</button>
+            <IconButton color="primary" aria-label="add to shopping cart">
+                <AddShoppingCartIcon />
+            </IconButton>
+            <button onClick={incrementLike}>👍 {like}</button>
+            <button onClick={() => setdisLike(dislike + 1)}>:thumbsdown:{dislike}</button>
         </div>
     );
 }
